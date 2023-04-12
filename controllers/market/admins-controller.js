@@ -15,6 +15,6 @@ const deleteMarketAdmin = (req, res) => {
 }
 
 export default (app) => {
-  app.get('/api/market_admins', findMarketAdmins);
-  app.delete('/api/market_admins/:aid', deleteMarketAdmin);
+  app.get('/api/marketAdmins', findMarketAdmins);
+  app.delete('/api/marketAdmins/:aid', deleteMarketAdmin);
 }
