@@ -5,6 +5,13 @@ const findProducts = (req, res) => {
   res.json(products);
 }
 
+//TODO: find products by seller id
+const findProductsBySellerId = (req, res) => {
+  const sellerId = req.params.sid;
+  const sellerProducts = products.filter((product) => product.seller_ids.includes(sellerId));
+  res.json(sellerProducts);
+}
+
 const createProduct = (req, res) => {
   const newProduct = req.body;
   newProduct._id = (new Date()).getTime();
@@ -39,6 +46,7 @@ const deleteProduct = (req, res) => {
 
 export default (app) => {
   app.get('/api/products', findProducts);
+  app.get('/api/products/:sid', findProductsBySellerId);
   app.post('/api/products', createProduct);
   app.put('/api/products/:pid', updateProduct);
   app.delete('/api/products/:pid', deleteProduct);
