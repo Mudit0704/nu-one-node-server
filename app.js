@@ -7,6 +7,7 @@ import OrdersController from "./controllers/market/orders-controller.js";
 import FoodItemsController from "./controllers/food/food-items.js";
 import FoodOrdersController from "./controllers/food/food-orders-controller.js";
 import FoodCartController from "./controllers/food/food-cart-controller.js";
+import FoodReviewController from "./controllers/food/food-review-controller.js";
 
 const app = express();
 app.use(cors());
@@ -20,5 +21,6 @@ OrdersController(app);
 FoodItemsController(app);
 FoodOrdersController(app);
 FoodCartController(app);
+FoodReviewController(app);
 
 app.listen(4000);
