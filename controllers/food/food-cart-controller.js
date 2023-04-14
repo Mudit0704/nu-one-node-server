@@ -7,13 +7,13 @@ const findFoodCartItems = (req, res) => {
 }
 
 const deleteFoodCartItems = (req, res) => {
-  const itemIdToDelete = parseInt(req.params.itemId);
+  const itemIdToDelete = req.params.itemId;
   cartArray = cartArray.filter(item => item._id !== itemIdToDelete);
   res.json(itemIdToDelete);
 }
 
 const addToFoodCart = (req, res) => {
-  const index = cartArray.findIndex(item => item._id === parseInt(req.body._id));
+  const index = cartArray.findIndex(item => item._id === req.body._id);
   let response;
   if (index !== -1) {
     cartArray[index].quantity = parseInt(cartArray[index].quantity) + parseInt(req.body.quantity);

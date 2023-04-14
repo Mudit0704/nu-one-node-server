@@ -11,19 +11,16 @@ const createMenuItem = async (req, res) => {
 
 const findMenuItems = async (req, res) => {
   const menu_items = await foodItemsDao.findFoodItems();
-  // console.log(menu_items)
   res.json(menu_items);
 }
 
 const deleteMenuItems = async (req, res) => {
-  // const itemIdToDelete = parseInt(req.params.itemId);
   const itemIdToDelete = req.params.itemId;
   const status = await foodItemsDao.deleteFoodItem(itemIdToDelete);
   res.json(status);
 }
 
 const updateMenuItems = async (req, res) => {
-  // const itemIdToUpdate = parseInt(req.params.itemId);
   const itemIdToUpdate = req.params.itemId;
   const updates = req.body;
   const status = await foodItemsDao.updateFoodItem(itemIdToUpdate,updates);
