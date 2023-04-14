@@ -1,47 +1,34 @@
-import items from "./products.js";
-let products = items;
+import * as productsDao from './products-dao.js';
 
-const findProducts = (req, res) => {
+const findProducts = async (req, res) => {
+  const products = await productsDao.findAllProducts();
   res.json(products);
 }
 
 //TODO: find products by seller id
 const findProductsBySellerId = (req, res) => {
   const sellerId = req.params.sid;
-  const sellerProducts = products.filter((product) => product.seller_ids.includes(sellerId));
+  const sellerProducts = productsDao.findProductsBySellerId(sellerId);
   res.json(sellerProducts);
 }
 
-const createProduct = (req, res) => {
+const createProduct = async (req, res) => {
   const newProduct = req.body;
-  newProduct._id = (new Date()).getTime();
-  products.unshift(newProduct);
-  res.json(newProduct);
+  const insertedProduct = await productsDao.createProduct(newProduct);
+  res.json(insertedProduct);
 }
 
-const updateProduct = (req, res) => {
+const updateProduct = async (req, res) => {
   const productIdToUpdate = req.params.pid;
   const updates = req.body;
-  const product = products.find((product) =>
-      product._id === parseInt(productIdToUpdate));
-  product.seller_ids = updates.seller_ids;
-  product.name = updates.name;
-  product.brand = updates.brand;
-  product.description = updates.description;
-  product.price = updates.price;
-  product.quantity = updates.quantity;
-  product.image = updates.image;
-  product.rating = updates.rating;
-  res.json(product);
+  const status = await productsDao.updateProduct(productIdToUpdate, updates);
+  res.json(status);
 }
 
-const deleteProduct = (req, res) => {
+const deleteProduct = async (req, res) => {
   const productIdToDelete = req.params.pid;
-  const product = products.find((product) =>
-      product._id === parseInt(productIdToDelete));
-  products = products.filter((product) =>
-      product._id !== parseInt(productIdToDelete));
-  res.json(product);
+  const status = await productsDao.deleteProduct(productIdToDelete);
+  res.json(status);
 }
 
 export default (app) => {
