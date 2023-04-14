@@ -1,32 +1,36 @@
-import orders from "./orders.js";
-let orderArray = orders;
+import * as foodOrderDao from "./food-orders-dao.js"
 
-const createOrder = (req, res) => {
+const restaurant_id = "6439689e5f33ffcba66771e2"; //to be managed through sessions.
+
+const createOrder = async (req, res) => {
   const newOrder = req.body;
-  newOrder._id = (new Date()).getTime();
-  newOrder.date = (new Date()).toDateString();
-  orderArray.push(newOrder);
-  res.json(newOrder);
+  newOrder.restaurant_id = restaurant_id;
+  const insertedOrder = await foodOrderDao.createFoodOrder(newOrder)
+  res.json(insertedOrder);
 }
 
-const findOrders = (req, res) => {
-  res.json(orderArray);
+const findOrders = async (req, res) => {
+  const orders = await foodOrderDao.findFoodOrders()
+  res.json(orders);
 }
 
-const updateFoodOrders = (req, res) => {
-  const orderIdToUpdate = parseInt(req.params.orderId);
-  // console.log(orderIdToUpdate)
+const findOrdersByRestaurantId = async (req, res) => {
+  const restaurantId = req.params.restaurant_id;
+  const orders = await foodOrderDao.findFoodOrdersByRestaurantId(restaurantId)
+  res.json(orders);
+}
+
+const updateFoodOrders = async (req, res) => {
+  const orderIdToUpdate = req.params.orderId;
   const updates = req.body;
-  const orderIndex = orderArray.findIndex(
-      item => item._id === orderIdToUpdate
-  )
-  orderArray[orderIndex] = {...orderArray[orderIdToUpdate], ...updates};
-  res.json(req.body);
+  const status = await foodOrderDao.updateFoodOrder(orderIdToUpdate,updates);
+  res.json(status);
 }
 
 
 export default (app) => {
   app.get("/api/foodOrders", findOrders);
+  app.get("/api/foodOrders/:restaurant_id", findOrdersByRestaurantId)
   app.post("/api/foodOrders", createOrder);
   app.put("/api/foodOrders/:orderId", updateFoodOrders);
 }
