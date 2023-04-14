@@ -1,31 +1,33 @@
-import menuItems from "./menu-items.js";
-let menu_items = menuItems;
+import * as foodItemsDao from "./food-items-dao.js"
 
-const createMenuItem = (req, res) => {
+const restaurant_id = "6439689e5f33ffcba66771e2"; //to be managed through sessions.
+
+const createMenuItem = async (req, res) => {
   const newItem = req.body;
-  newItem._id = (new Date()).getTime();
-  menu_items.push(newItem);
-  res.json(newItem);
+  newItem.restaurant_id = restaurant_id;
+  const insertedFoodItem = await foodItemsDao.createFoodItems(newItem);
+  res.json(insertedFoodItem);
 }
 
-const findMenuItems = (req, res) => {
+const findMenuItems = async (req, res) => {
+  const menu_items = await foodItemsDao.findFoodItems();
+  // console.log(menu_items)
   res.json(menu_items);
 }
 
-const deleteMenuItems = (req, res) => {
-  const itemIdToDelete = parseInt(req.params.itemId);
-  menu_items = menu_items.filter(item => item._id !== itemIdToDelete);
-  res.sendStatus(200);
+const deleteMenuItems = async (req, res) => {
+  // const itemIdToDelete = parseInt(req.params.itemId);
+  const itemIdToDelete = req.params.itemId;
+  const status = await foodItemsDao.deleteFoodItem(itemIdToDelete);
+  res.json(status);
 }
 
-const updateMenuItems = (req, res) => {
-  const itemIdToUpdate = parseInt(req.params.itemId);
+const updateMenuItems = async (req, res) => {
+  // const itemIdToUpdate = parseInt(req.params.itemId);
+  const itemIdToUpdate = req.params.itemId;
   const updates = req.body;
-  const itemIndex = menu_items.findIndex(
-      item => item._id === itemIdToUpdate
-  )
-  menu_items[itemIndex] = {...menu_items[itemIndex], ...updates};
-  res.sendStatus(200);
+  const status = await foodItemsDao.updateFoodItem(itemIdToUpdate,updates);
+  res.json(status);
 }
 
 export default (app) => {
