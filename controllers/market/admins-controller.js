@@ -1,17 +1,14 @@
-import users from "./admins.js";
-let admins = users.filter((user) => user.sub_type === "MARKET_ADMIN" && user.type === "Admin");
+import * as adminsDao from "./admins-dao.js";
 
-const findMarketAdmins = (req, res) => {
+const findMarketAdmins = async (req, res) => {
+  const admins = await adminsDao.findAllMarketAdmins();
   res.json(admins);
 }
 
-const deleteMarketAdmin = (req, res) => {
+const deleteMarketAdmin = async (req, res) => {
   const adminIdToDelete = req.params.aid;
-  const admin = admins.find((admin) =>
-      admin._id === parseInt(adminIdToDelete));
-  admins = admins.filter((admin) =>
-      admin._id !== parseInt(adminIdToDelete));
-  res.json(admin);
+  const status = await adminsDao.deleteMarketAdmin(adminIdToDelete);
+  res.json(status);
 }
 
 export default (app) => {

@@ -1,25 +1,30 @@
-import ordersData from "./orders.js";
-let userOrders = ordersData.filter((order) => order.user_id === 1);
-let orders = userOrders[0].orders;
+import * as ordersDao from "./orders-dao.js";
 
-const findOrders = (req, res) => {
-  res.json(orders);
+const findOrders = async (req, res) => {
+  const userOrder = await ordersDao.findUserOrders("64389aff584213571e028582");
+  res.json(userOrder.orders);
 }
 
-const updateOrder = (req, res) => {
-  const orderIdToUpdate = req.params.oid;
-  const order = orders.find((order) =>
-      order._id === parseInt(orderIdToUpdate));
-  order.status = req.body.status;
-  res.json(order);
+const updateOrder = async (req, res) => {
+  const orderId = req.params.oid;
+  await ordersDao.updateUserOrderStatus("64389aff584213571e028582", orderId, req.body.status);
+
+  res.json(req.body);
 }
 
-const createOrder = (req, res) => {
+const createOrder = async (req, res) => {
   const newOrder = req.body;
   newOrder._id = (new Date()).getTime();
   newOrder.date = (new Date()).toDateString();
   newOrder.status = "Ordered";
-  orders.unshift(newOrder);
+
+  const exists = await ordersDao.findUserOrderExists("64389aff584213571e028582");
+  if (!exists) {
+    await ordersDao.createUserOrder("64389aff584213571e028582", newOrder);
+  } else {
+    await ordersDao.addUserOrder("64389aff584213571e028582", newOrder);
+  }
+
   res.json(newOrder);
 }
 
