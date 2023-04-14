@@ -1,4 +1,5 @@
 import * as foodItemsDao from "./food-items-dao.js"
+import {findFoodItemsByRestaurantId} from "./food-items-dao.js";
 
 const restaurant_id = "6439689e5f33ffcba66771e2"; //to be managed through sessions.
 
@@ -11,6 +12,12 @@ const createMenuItem = async (req, res) => {
 
 const findMenuItems = async (req, res) => {
   const menu_items = await foodItemsDao.findFoodItems();
+  res.json(menu_items);
+}
+
+const findMenuItemsByRestaurant = async (req, res) => {
+  const restaurant_id = req.params.restaurant_id;
+  const menu_items = await foodItemsDao.findFoodItemsByRestaurantId(restaurant_id);
   res.json(menu_items);
 }
 
@@ -29,6 +36,7 @@ const updateMenuItems = async (req, res) => {
 
 export default (app) => {
   app.get("/api/menu", findMenuItems);
+  app.get("/api/menu/:restaurant_id", findMenuItemsByRestaurant)
   app.post("/api/menu", createMenuItem);
   app.put("/api/menu/:itemId", updateMenuItems);
   app.delete("/api/menu/:itemId", deleteMenuItems);
