@@ -25,6 +25,7 @@ const addNewReview = async (req, res) => {
   newReview.handle = currentUser.handle;
   newReview.avatar = currentUser.avatar;
   newReview.likes = currentUser.likes;
+
   const insertedReview = await foodReviewsDao.createFoodReview(newReview)
   res.json(insertedReview);
 }

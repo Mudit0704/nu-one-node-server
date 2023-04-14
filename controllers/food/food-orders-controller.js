@@ -4,7 +4,7 @@ const restaurant_id = "6439689e5f33ffcba66771e2"; //to be managed through sessio
 
 const createOrder = async (req, res) => {
   const newOrder = req.body;
-  newOrder.restaurant_id = restaurant_id;
+  // newOrder.restaurant_id = restaurant_id;
   const insertedOrder = await foodOrderDao.createFoodOrder(newOrder)
   res.json(insertedOrder);
 }
