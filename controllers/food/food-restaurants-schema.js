@@ -4,6 +4,6 @@ const schema = mongoose.Schema({
   address: String,
   description: String,
   average_ratings: Number,
-  image: "String",
+  image: String
 }, {collection: 'foodRestaurants'});
 export default schema;
