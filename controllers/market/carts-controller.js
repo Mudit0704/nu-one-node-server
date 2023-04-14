@@ -1,35 +1,47 @@
-import carts from "./carts.js";
-let userCart = carts.filter((cart) => cart.user_id === 2);
-let cartItems = userCart[0].items;
+import * as cartsDao from './carts-dao.js';
 
-const findCartItems = (req, res) => {
-  res.json(cartItems);
+const findCartItems = async (req, res) => {
+  const result = await cartsDao.findCartByUserId("643855e4584213571e02854c");
+  res.json(result.items);
 }
 
-const deleteCartItem = (req, res) => {
+const deleteCartItem = async (req, res) => {
   const cartItemIdToDelete = req.params.iid;
-  const cartItem = cartItems.find((cartItem) =>
-      cartItem._id === parseInt(cartItemIdToDelete));
-  cartItems = cartItems.filter((cartItem) =>
-      cartItem._id !== parseInt(cartItemIdToDelete));
-  res.json(cartItem);
+  const status = await cartsDao.deleteCartItem("643855e4584213571e02854c", cartItemIdToDelete);
+
+  res.json(status);
 }
 
-const createCartItem = (req, res) => {
-  const index = cartItems.findIndex(item => item._id === req.body.item_id);
-  if (index !== -1) {
-    cartItems[index].quantity = cartItems[index].quantity + parseInt(req.body.quantity);
-    res.json(cartItems[index]);
-    return;
+const createCartItem = async (req, res) => {
+  const exists = await cartsDao.findCartExists("643855e4584213571e02854c");
+
+  if (!exists) {
+    await cartsDao.createCart("643855e4584213571e02854c");
+    await cartsDao.addCartItem("643855e4584213571e02854c", req.body);
+  } else {
+    await cartsDao.findCartItemExists("643855e4584213571e02854c", req.body._id)
+      .then(async (exists) => {
+        if (exists) {
+          const existingCartItem = await cartsDao.findCartByUserId("643855e4584213571e02854c");
+          await cartsDao.updateCartItemQuantity("643855e4584213571e02854c",
+              req.body._id,
+              req.body.quantity +
+              existingCartItem.items.filter(item => item._id == req.body._id)[0].quantity);
+        } else {
+          await cartsDao.addCartItem("643855e4584213571e02854c",
+              req.body);
+        }
+      }
+    );
   }
-  const newCartItem = req.body;
-  cartItems.push(newCartItem);
-  res.json(newCartItem);
+
+  console.log(req.body);
+  res.json(req.body);
 }
 
-const clearCart = (req, res) => {
-  cartItems.splice(0, cartItems.length);
-  res.json(cartItems);
+const clearCart = async (req, res) => {
+  const status = await cartsDao.clearCart("643855e4584213571e02854c");
+  res.json(status);
 }
 
 export default (app) => {
