@@ -35,7 +35,6 @@ const createCartItem = async (req, res) => {
     );
   }
 
-  console.log(req.body);
   res.json(req.body);
 }
 

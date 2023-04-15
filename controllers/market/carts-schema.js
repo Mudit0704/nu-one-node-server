@@ -4,8 +4,8 @@ const cartsSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   items: [
     {
-      _id: mongoose.Schema.Types.ObjectId,
-      seller_id: [mongoose.Schema.Types.ObjectId],
+      _id: {type: mongoose.Schema.Types.ObjectId, ref : 'ProductsModel'},
+      seller_id: {type: [mongoose.Schema.Types.ObjectId], ref : 'AdminsModel'},
       name: String,
       brand: String,
       description: String,

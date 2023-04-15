@@ -12,7 +12,7 @@ const schema = mongoose.Schema({
       paymentMethod: String,
       items: [
         {
-          _id: mongoose.Schema.Types.ObjectId,
+          _id: {type: mongoose.Schema.Types.ObjectId, ref: 'ProductsModel'},
           name: String,
           price: Number,
           quantity: Number
