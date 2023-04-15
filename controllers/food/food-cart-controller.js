@@ -1,34 +1,45 @@
-import cart from "./food-cart.js";
-let userCart = cart.filter((cart) => cart.user_id === 1);
-let cartArray = userCart[0].items;
+import * as foodCartDao from "./food-cart-dao.js";
+let user_id = "643855e4584213571e02854c"
 
-const findFoodCartItems = (req, res) => {
-  res.json(cartArray);
+const findFoodCartItems = async (req, res) => {
+  const cartArray = await foodCartDao.findFoodCartByUserId(user_id);
+  res.json(cartArray[0].items);
 }
 
-const deleteFoodCartItems = (req, res) => {
-  const itemIdToDelete = parseInt(req.params.itemId);
-  cartArray = cartArray.filter(item => item._id !== itemIdToDelete);
-  res.json(itemIdToDelete);
+const deleteFoodCartItems = async (req, res) => {
+  const itemIdToDelete = req.params.itemId;
+  const status = await foodCartDao.deleteFoodCartItem(user_id, itemIdToDelete);
+  res.json(status);
 }
 
-const addToFoodCart = (req, res) => {
-  const index = cartArray.findIndex(item => item._id === parseInt(req.body._id));
-  let response;
-  if (index !== -1) {
-    cartArray[index].quantity = parseInt(cartArray[index].quantity) + parseInt(req.body.quantity);
-    response = cartArray[index];
+const addToFoodCart = async (req, res) => {
+  const exists = await foodCartDao.findFoodCartExists(user_id);
+
+  if (!exists) {
+    await foodCartDao.createFoodCart(user_id);
+    await foodCartDao.addFoodCartItem(user_id, req.body);
   } else {
-    const newCartItem = req.body;
-    cartArray.push(newCartItem);
-    response = newCartItem;
+    await foodCartDao.findFoodCartItemExists(user_id, req.body._id)
+    .then(async (exists) => {
+          if (exists) {
+            const existingCartItem = await foodCartDao.findFoodCartByUserId(user_id);
+            await foodCartDao.updateFoodCartItem(user_id,
+                req.body._id,
+                (req.body.quantity) +
+                existingCartItem[0].items.filter(item => item._id.equals(req.body._id))[0].quantity);
+          } else {
+            await foodCartDao.addFoodCartItem(user_id,
+                req.body);
+          }
+        }
+    );
   }
-  res.json(response)
+  res.json(req.body)
 }
 
-const clearFoodCart = (req, res) => {
-  cartArray.splice(0, cartArray.length);
-  res.json(cartArray);
+const clearFoodCart = async (req, res) => {
+  const status = await foodCartDao.clearFoodCart(user_id);
+  res.json(status);
 }
 
 export default (app) => {
