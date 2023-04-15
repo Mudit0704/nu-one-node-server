@@ -3,7 +3,6 @@ import * as foodCategoriesDao from "./food-categories-dao.js"
 
 const findAllRestaurants = async (req, res) => {
   const restaurants = await foodRestaurantDao.findRestaurants();
-  // console.log(restaurants)
   res.json(restaurants);
 }
 

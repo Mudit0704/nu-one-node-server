@@ -8,16 +8,12 @@ const createMenuItem = async (req, res) => {
   const newItem = req.body;
   newItem.categories = [];
 
-  console.log(req.body.category);
   for (const category of req.body.category) {
     const categoryObj = await foodCategoriesDao.findFoodCategories(category);
-    console.log(categoryObj);
     newItem.categories.push(categoryObj[0]._id)
   }
 
-  // newItem.categories.push("643acb235f33ffcba6677209")
   newItem.restaurant_id = restaurant_id;
-  // console.log(newItem)
   const insertedFoodItem = await foodItemsDao.createFoodItems(newItem);
   await foodRestaurantDao.addToRestaurantMenu(restaurant_id, insertedFoodItem)
   res.json(insertedFoodItem);
@@ -51,7 +47,6 @@ const updateMenuItems = async (req, res) => {
   }
 
   delete updates['category'];
-  console.log(updates)
 
   const status = await foodItemsDao.updateFoodItem(itemIdToUpdate,updates);
   foodRestaurantDao.updateRestaurantMenuItem(restaurant_id, itemIdToUpdate, updates)
