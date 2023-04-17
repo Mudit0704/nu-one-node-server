@@ -1,0 +1,46 @@
+export default [{
+  "_id": 123,
+  "user_id": 1,
+  "userName": "Aadish",
+  "restaurant_id": 123,
+  "title": "Happy with the food",
+  "description": "Great meal! Wonderful food",
+  "time": "just now",
+  "liked": true,
+  "avatar": "logo192.png",
+  "likes": 2345,
+  "handle": "@itsme",
+  "image": "tesla.jpeg",
+  "numStars": 3
+},
+  {
+    "_id": 234,
+    "user_id": 2,
+    "userName": "Jose",
+    "restaurant_id": 123,
+    "title": "Not happy with the food",
+    "description": "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+    "time": "2h",
+    "liked": true,
+    "avatar": "logo192.png",
+    "likes": 123,
+    "handle": "@spideruncle",
+    "image": "tesla.jpeg",
+    "numStars": 2
+  },
+  {
+    "_id": 456,
+    "user_id": 3,
+    "restaurant_id": 456,
+    "userName": "Amit",
+    "title": "Happy with the food",
+    "description": "veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia",
+    "time": "2d",
+    "liked": true,
+    "avatar": "react.png",
+    "likes": 456,
+    "handle": "@pdpdpdp",
+    "image": "tesla.jpeg",
+    "numStars": 5
+  }
+];
