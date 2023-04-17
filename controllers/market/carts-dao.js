@@ -14,4 +14,6 @@ export const findCartItemExists = (userId, itemId) => cartsModel.exists({_id: us
 
 export const updateCartItemQuantity = (userId, itemId, quantity) => cartsModel.updateOne({_id: userId, "items._id": itemId}, {$set: {"items.$.quantity": quantity}});
 
-export const addCartItem = (userId, item) => cartsModel.updateOne({_id: userId}, {$push: {items: item}});
+export const addCartItem = (userId, item) => {
+  return cartsModel.updateOne({_id: userId}, {$push: {items: item}});
+}
