@@ -9,14 +9,30 @@ import FoodOrdersController from "./controllers/food/food-orders-controller.js";
 import FoodCartController from "./controllers/food/food-cart-controller.js";
 import FoodReviewController from "./controllers/food/food-review-controller.js";
 import FoodRestaurantController from "./controllers/food/food-restaurant-controller.js";
+import AuthController from "./controllers/users/auth-controller.js";
 
 import mongoose from "mongoose";
+import session from "express-session";
 
 mongoose.connect('mongodb://127.0.0.1:27017/nuOne');
 
 const app = express();
-app.use(cors());
+app.use(
+    session({
+      secret: "secret",
+      resave: false,
+      saveUninitialized: false,
+    })
+);
+app.use(
+    cors(
+        {
+          origin: "http://localhost:3000",
+          credentials: true,
+        }
+    ));
 app.use(express.json());
+AuthController(app);
 ProductsController(app);
 AdminsController(app);
 CartsController(app);

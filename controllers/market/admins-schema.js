@@ -7,8 +7,7 @@ const schema = mongoose.Schema({
   email: String,
   password: String,
   contact: String,
-  address: String,
-  image: String
+  address: String
 }, {collection: "users"});
 
 export default schema;

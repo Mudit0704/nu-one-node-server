@@ -6,9 +6,9 @@ const findProducts = async (req, res) => {
 }
 
 //TODO: find products by seller id
-const findProductsBySellerId = (req, res) => {
+const findProductsBySellerId = async (req, res) => {
   const sellerId = req.params.sid;
-  const sellerProducts = productsDao.findProductsBySellerId(sellerId);
+  const sellerProducts = await productsDao.findProductsBySellerId(sellerId);
   res.json(sellerProducts);
 }
 
