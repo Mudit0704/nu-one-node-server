@@ -13,6 +13,7 @@ const schema = mongoose.Schema({
       items: [
         {
           _id: {type: mongoose.Schema.Types.ObjectId, ref: 'ProductsModel'},
+          seller_id: {type: mongoose.Schema.Types.ObjectId, ref: 'AdminsModel'},
           name: String,
           price: Number,
           quantity: Number

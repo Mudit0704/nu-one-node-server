@@ -28,8 +28,14 @@ const createOrder = async (req, res) => {
   res.json(newOrder);
 }
 
+const findSellerOrders = async (req, res) => {
+  const sellerOrders = await ordersDao.findSellerOrders("64389aff584213571e028582");
+  res.json(sellerOrders);
+}
+
 export default (app) => {
   app.get('/api/orders', findOrders);
   app.put('/api/orders/:oid', updateOrder);
   app.post('/api/orders', createOrder);
+  app.get('/api/orders/:sellerId', findSellerOrders);
 }

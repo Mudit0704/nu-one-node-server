@@ -9,3 +9,5 @@ export const findUserOrderExists = (userId) => ordersModel.exists({_id: userId})
 export const createUserOrder = (userId, order) => ordersModel.create({_id: userId, order: order});
 
 export const addUserOrder = (userId, order) => ordersModel.updateOne({_id: userId}, {$push: {orders: order}});
+
+export const findSellerOrders = (sellerId) => ordersModel.find({"orders.sellerId": sellerId});
