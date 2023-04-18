@@ -10,6 +10,9 @@ import FoodCartController from "./controllers/food/food-cart-controller.js";
 import FoodReviewController from "./controllers/food/food-review-controller.js";
 import FoodRestaurantController from "./controllers/food/food-restaurant-controller.js";
 import AuthController from "./controllers/users/auth-controller.js";
+import CareerCompanyController from "./controllers/career/companyController.js";
+import CareerUserController from "./controllers/career/userController.js";
+import CareerJobController from "./controllers/career/jobController.js";
 
 import mongoose from "mongoose";
 import session from "express-session";
@@ -44,5 +47,10 @@ FoodOrdersController(app);
 FoodCartController(app);
 FoodReviewController(app);
 FoodRestaurantController(app);
+
+//Career related controllers
+CareerJobController(app);
+CareerCompanyController(app);
+CareerUserController(app);
 
 app.listen(4000);
