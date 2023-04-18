@@ -1,4 +1,5 @@
 import * as usersDao from "./users-dao.js";
+import * as foodRestaurantDao from "../food/food-restaurant-dao.js";
 
 
 const AuthController = (app) => {
@@ -12,6 +13,18 @@ const AuthController = (app) => {
     }
     const newUser = await usersDao
     .createUser(req.body);
+    if(req.body.role === "foodAdmin") {
+      const newRestaurant = {
+        name: req.body.name,
+        ownerId: newUser._id,
+        address: req.body.address,
+        description: req.body.description,
+        average_ratings: 0,
+        image: "logo192.png", //TODO: Replace this
+        menu_items: []
+      }
+      await foodRestaurantDao.createRestaurant(newRestaurant)
+    }
     req.session["currentUser"] = newUser;
     res.json(newUser);
   };
