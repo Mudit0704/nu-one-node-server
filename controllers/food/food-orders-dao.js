@@ -4,6 +4,8 @@ export const findFoodOrders = () => foodOrderModel.find();
 
 export const findFoodOrdersByRestaurantId = (restaurant_id) => foodOrderModel.find({restaurant_id: restaurant_id});
 
+export const findFoodOrdersByUserId = (userId) => foodOrderModel.find({userId: userId});
+
 export const createFoodOrder = (order) => foodOrderModel.create(order);
 
 export const deleteFoodOrder = (orderId) => foodOrderModel.deleteOne({_id: orderId});

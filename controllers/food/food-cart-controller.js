@@ -1,5 +1,4 @@
 import * as foodCartDao from "./food-cart-dao.js";
-let user_id = "643855e4584213571e02854c"
 
 const findFoodCartItems = async (req, res) => {
   const user_id = req.params.userId;
