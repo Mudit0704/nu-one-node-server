@@ -26,6 +26,11 @@ const findMenuItems = async (req, res) => {
   res.json(menu_items);
 }
 
+const findMenuItemsById = async (req, res) => {
+  const menu_items = await foodItemsDao.findFoodItemsByItemId(req.params.menuItemId);
+  res.json(menu_items);
+}
+
 const findMenuItemsByRestaurantSearchTerm = async (req, res) => {
   const restaurant_id = req.params.restaurant_id;
 
@@ -79,6 +84,7 @@ export default (app) => {
   app.get("/api/menu/:restaurant_id", findMenuItemsByRestaurantSearchTerm)
   app.get("/api/menu/:restaurant_id", findMenuItemsByRestaurant)
   app.post("/api/menu/", createMenuItem);
+  app.get("/api/menu/menuItems/:menuItemId", findMenuItemsById);
   app.put("/api/menu/:itemId", updateMenuItems);
   app.delete("/api/menu/:itemId", deleteMenuItems);
 }
