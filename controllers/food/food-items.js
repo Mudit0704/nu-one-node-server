@@ -1,7 +1,6 @@
 import * as foodItemsDao from "./food-items-dao.js"
 import * as foodCategoriesDao from "./food-categories-dao.js";
 import * as foodRestaurantDao from "./food-restaurant-dao.js";
-import {findFoodItemsByItemId} from "./food-items-dao.js";
 
 const restaurant_id = "6439689e5f33ffcba66771e2"; //to be managed through sessions.
 
@@ -25,6 +24,23 @@ const createMenuItem = async (req, res) => {
 const findMenuItems = async (req, res) => {
   const menu_items = await foodItemsDao.findFoodItems();
   res.json(menu_items);
+}
+
+const findMenuItemsByRestaurantSearchTerm = async (req, res) => {
+  const restaurant_id = req.params.restaurant_id;
+
+  let result = [];
+  if(req.query.name === null || req.query.name === undefined) {
+    result = await foodItemsDao.findFoodItemsByRestaurantId(restaurant_id);
+  } else {
+    let items = await foodItemsDao.findFoodItemsByNameAndRestaurant(req.query.name, restaurant_id);
+
+    if(items.length !== 0) {
+      result = items;
+    }
+  }
+
+  res.json(result);
 }
 
 const findMenuItemsByRestaurant = async (req, res) => {
@@ -60,6 +76,7 @@ const updateMenuItems = async (req, res) => {
 
 export default (app) => {
   app.get("/api/menu", findMenuItems);
+  app.get("/api/menu/:restaurant_id", findMenuItemsByRestaurantSearchTerm)
   app.get("/api/menu/:restaurant_id", findMenuItemsByRestaurant)
   app.post("/api/menu/", createMenuItem);
   app.put("/api/menu/:itemId", updateMenuItems);

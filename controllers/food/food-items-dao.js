@@ -6,6 +6,8 @@ export const findFoodItemsByRestaurantId = (restaurant_id) => foodItemsModel.fin
 
 export const findFoodItemsByItemId = (itemId) => foodItemsModel.find({_id: itemId});
 
+export const findFoodItemsByNameAndRestaurant = (itemName, restaurantId) =>  foodItemsModel.find({itemName: {'$regex': itemName, '$options': 'i'}, restaurant_id: restaurantId});
+
 export const createFoodItems = (foodItem) => foodItemsModel.create(foodItem);
 
 export const deleteFoodItem = (itemId) => foodItemsModel.deleteOne({_id: itemId});
