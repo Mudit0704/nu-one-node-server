@@ -6,7 +6,7 @@ export const updateOrderStatus = (orderId, status) => ordersModel.updateOne({"or
 
 export const findUserOrderExists = (userId) => ordersModel.exists({_id: userId});
 
-export const createUserOrder = (userId, order) => ordersModel.create({_id: userId, orders: order});
+export const createUserOrder = (userId, userName, order) => ordersModel.create({_id: userId, customerName: userName, orders: order});
 
 export const addUserOrder = (userId, order) => ordersModel.updateOne({_id: userId}, {$push: {orders: order}});
 

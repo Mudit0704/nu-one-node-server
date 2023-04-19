@@ -59,11 +59,18 @@ const reduceProductQuantity = async (req, res) => {
   res.json({_id: req.params.pid, quantity: req.params.quantity});
 }
 
+const findProductById = async (req, res) => {
+  const productId = req.params.pid;
+  const product = await productsDao.findProductById(productId);
+  res.json(product);
+}
+
 export default (app) => {
   app.get('/api/products', searchProductsByName);
   app.get('/api/products', findProducts);
   app.get('/api/products/:sid', searchSellerProductsByName);
   app.get('/api/products/:sid', findProductsBySellerId);
+  app.get('/api/products/product/:pid', findProductById);
   app.post('/api/products', createProduct);
   app.put('/api/products/:pid', updateProduct);
   app.put('/api/products/:pid/:quantity', reduceProductQuantity);

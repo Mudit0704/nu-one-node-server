@@ -15,3 +15,5 @@ export const deleteProduct = (id) => productsModel.findByIdAndDelete(id);
 export const updateProduct = (id, product) => productsModel.updateOne({_id: id}, {$set: product});
 
 export const reduceProductQuantity = (id, quantity) => productsModel.updateOne({_id: id}, {$inc: {quantity: -quantity}});
+
+export const findProductById = (id) => productsModel.findById(id);

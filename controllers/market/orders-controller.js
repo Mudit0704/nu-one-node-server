@@ -24,6 +24,7 @@ const updateOrder = async (req, res) => {
 
 const createOrder = async (req, res) => {
   const userId = req.params.userId;
+  const userName = req.params.userName;
 
   const newOrder = {
     ...req.body,
@@ -34,7 +35,7 @@ const createOrder = async (req, res) => {
 
   const exists = await ordersDao.findUserOrderExists(userId);
   if (!exists) {
-    await ordersDao.createUserOrder(userId, newOrder);
+    await ordersDao.createUserOrder(userId, userName, newOrder);
   } else {
     await ordersDao.addUserOrder(userId, newOrder);
   }
@@ -53,5 +54,5 @@ export default (app) => {
   app.get('/api/orders/:userId', findUserOrders);
   app.get('/api/orders', findOrdersByOrderId);
   app.put('/api/orders/:oid', updateOrder);
-  app.post('/api/orders/:userId', createOrder);
+  app.post('/api/orders/:userId/:userName', createOrder);
 }
