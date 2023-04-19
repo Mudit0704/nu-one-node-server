@@ -2,7 +2,15 @@ import * as foodCartDao from "./food-cart-dao.js";
 
 const findFoodCartItems = async (req, res) => {
   const user_id = req.params.userId;
-  const cartArray = await foodCartDao.findFoodCartByUserId(user_id);
+  const exists = await foodCartDao.findFoodCartExists(user_id);
+  let cartArray;
+  if (!exists) {
+    await foodCartDao.createFoodCart(user_id);
+    await foodCartDao.addFoodCartItem(user_id, req.body);
+    cartArray = [{items: []}];
+  } else {
+    cartArray = await foodCartDao.findFoodCartByUserId(user_id);
+  }
   res.json(cartArray[0].items);
 }
 
