@@ -4,6 +4,7 @@ const schema = mongoose.Schema({
   status: String,
   restaurant_id: {type: mongoose.Schema.Types.ObjectId, ref: 'foodRestaurants'},
   userId: mongoose.Schema.Types.ObjectId,
+  orderTime: { type: Date, default: Date.now },
   items: [
     {
       _id: mongoose.Schema.Types.ObjectId,
