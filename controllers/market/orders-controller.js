@@ -1,41 +1,57 @@
 import * as ordersDao from "./orders-dao.js";
+import * as usersDao from "../users/users-dao.js";
 
-const findOrders = async (req, res) => {
-  const userOrder = await ordersDao.findUserOrders("64389aff584213571e028582");
-  res.json(userOrder.orders);
+const findUserOrders = async (req, res) => {
+  const userId = req.params.userId;
+  const { role } = await usersDao.findUserRole(userId);
+
+  if (role === "marketAdmin") {
+    const sellerOrders = await ordersDao.findSellerOrders(userId);
+    res.json(sellerOrders ? sellerOrders : []);
+    return;
+  }
+
+  const userOrder = await ordersDao.findUserOrders(userId);
+  res.json(userOrder ? userOrder.orders : []);
 }
 
 const updateOrder = async (req, res) => {
   const orderId = req.params.oid;
-  await ordersDao.updateUserOrderStatus("64389aff584213571e028582", orderId, req.body.status);
+  await ordersDao.updateOrderStatus(orderId, req.body.status);
 
   res.json(req.body);
 }
 
 const createOrder = async (req, res) => {
-  const newOrder = req.body;
-  newOrder._id = (new Date()).getTime();
-  newOrder.date = (new Date()).toDateString();
-  newOrder.status = "Ordered";
+  const userId = req.params.userId;
 
-  const exists = await ordersDao.findUserOrderExists("64389aff584213571e028582");
+  const newOrder = {
+    ...req.body,
+    _id : (new Date()).getTime(),
+    date : (new Date()).toDateString(),
+    status : "Ordered"
+  }
+
+  const exists = await ordersDao.findUserOrderExists(userId);
   if (!exists) {
-    await ordersDao.createUserOrder("64389aff584213571e028582", newOrder);
+    await ordersDao.createUserOrder(userId, newOrder);
   } else {
-    await ordersDao.addUserOrder("64389aff584213571e028582", newOrder);
+    await ordersDao.addUserOrder(userId, newOrder);
   }
 
   res.json(newOrder);
 }
 
-const findSellerOrders = async (req, res) => {
-  const sellerOrders = await ordersDao.findSellerOrders("64389aff584213571e028582");
-  res.json(sellerOrders);
+const findOrdersByOrderId = async (req, res) => {
+  const orderId = req.query.orderId;
+  const order = await ordersDao.findOrderByOrderId(orderId);
+
+  res.json(order ? order.orders : []);
 }
 
 export default (app) => {
-  app.get('/api/orders', findOrders);
+  app.get('/api/orders/:userId', findUserOrders);
+  app.get('/api/orders', findOrdersByOrderId);
   app.put('/api/orders/:oid', updateOrder);
-  app.post('/api/orders', createOrder);
-  app.get('/api/orders/:sellerId', findSellerOrders);
+  app.post('/api/orders/:userId', createOrder);
 }

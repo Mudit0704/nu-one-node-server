@@ -21,3 +21,5 @@ export const updateUser = (uid, user) =>
 
 
 export const deleteUser = (uid) => usersModel.deleteOne({ _id: uid });
+
+export const findUserRole = (uid) => usersModel.findById(uid, { role: 1, _id: 0 });

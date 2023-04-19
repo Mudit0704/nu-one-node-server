@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 const schema = mongoose.Schema({
-  seller_id: {type: mongoose.Schema.Types.ObjectId, ref : 'AdminsModel'},
+  seller_id: {type: mongoose.Schema.Types.ObjectId, ref : 'users'},
+  seller_name: String,
   name: String,
   brand: String,
   description: String,
