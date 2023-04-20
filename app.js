@@ -10,7 +10,7 @@ import FoodCartController from "./controllers/food/food-cart-controller.js";
 import FoodReviewController from "./controllers/food/food-review-controller.js";
 import FoodRestaurantController from "./controllers/food/food-restaurant-controller.js";
 import AuthController from "./controllers/users/auth-controller.js";
-
+import HousingController from "./controllers/residential/housing-controller.js"
 import mongoose from "mongoose";
 import session from "express-session";
 
@@ -43,11 +43,15 @@ AdminsController(app);
 CartsController(app);
 OrdersController(app);
 
+
 //Food related controllers
 FoodItemsController(app);
 FoodOrdersController(app);
 FoodCartController(app);
 FoodReviewController(app);
 FoodRestaurantController(app);
+
+//Residential related controllers
+HousingController(app);
 
 app.listen(4000);
