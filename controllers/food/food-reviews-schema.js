@@ -8,8 +8,9 @@ const schema = mongoose.Schema({
   numStars: Number,
   avatar: String,
   status: String,
-  time: String, //for now, need to check correct format
+  time: { type: Date, default: Date.now }, //for now, need to check correct format
   likes: Number,
-  restaurant_id: {type: mongoose.Schema.Types.ObjectId, ref: 'foodRestaurants'}
+  restaurant_id: {type: mongoose.Schema.Types.ObjectId, ref: 'foodRestaurants'},
+  restaurantName: String
 }, {collection: 'foodReviews'});
 export default schema;

@@ -34,10 +34,11 @@ const addNewReview = async (req, res) => {
   // newReview.likes = currentUser.likes;
 
   const user = await usersDao.findUserById(req.body.userId);
+  const restaurant = await foodRestaurantDao.findRestaurantsById(req.body.restaurant_id);
   newReview.userName = user.username;
   newReview.user_id = user._id;
+  newReview.restaurantName = restaurant[0].name;
 
-  console.log(newReview);
   const insertedReview = await foodReviewsDao.createFoodReview(newReview)
   res.json(insertedReview);
 }
