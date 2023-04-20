@@ -14,7 +14,12 @@ import AuthController from "./controllers/users/auth-controller.js";
 import mongoose from "mongoose";
 import session from "express-session";
 
-mongoose.connect('mongodb://127.0.0.1:27017/nuOne');
+try {
+  mongoose.connect('mongodb://127.0.0.1:27017/nuOne');
+} catch (e) {
+  console.log(e);
+}
+
 
 const app = express();
 app.use(

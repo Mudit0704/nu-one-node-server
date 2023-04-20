@@ -16,7 +16,7 @@ const AuthController = (app) => {
     res.json(newUser);
   };
 
-  const login    = async (req, res) => {
+  const login = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const user = await usersDao
@@ -38,12 +38,12 @@ const AuthController = (app) => {
     res.json(currentUser);
   };
 
-  const logout   = async (req, res) => {
+  const logout = async (req, res) => {
     req.session.destroy();
     res.sendStatus(200);
   };
 
-  const update   = async (req, res) => {
+  const update = async (req, res) => {
     const currentUser = req.session["currentUser"];
     if (!currentUser) {
       res.sendStatus(404);
@@ -55,11 +55,19 @@ const AuthController = (app) => {
     res.json(updatedUser);
   };
 
+  const getUserById = async (req, res) => {
+    const userId = req.params.userId;
+    const user = await usersDao.findUserById(userId);
+
+    res.json(user);
+  }
+
   app.post("/api/users/register", register);
-  app.post("/api/users/login",    login);
-  app.post("/api/users/profile",  profile);
-  app.post("/api/users/logout",   logout);
+  app.post("/api/users/login", login);
+  app.post("/api/users/profile", profile);
+  app.post("/api/users/logout", logout);
   app.put("/api/users", update);
+  app.get("/api/users/:userId", getUserById);
 };
 
 export default AuthController;
