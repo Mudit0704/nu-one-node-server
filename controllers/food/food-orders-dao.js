@@ -1,6 +1,6 @@
 import foodOrderModel from './food-order-model.js';
 
-export const findFoodOrders = () => foodOrderModel.find();
+export const findFoodOrdersById = (orderId) => foodOrderModel.find({_id: orderId});
 
 export const findFoodOrdersByRestaurantId = (restaurant_id) => foodOrderModel.find({restaurant_id: restaurant_id});
 

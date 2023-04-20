@@ -18,7 +18,7 @@ const deleteFoodCartItems = async (req, res) => {
   const itemIdToDelete = req.params.itemId;
   const user_id = req.params.userId;
   const status = await foodCartDao.deleteFoodCartItem(user_id, itemIdToDelete);
-  res.json(status);
+  res.json(req.params.itemId);
 }
 
 const addToFoodCart = async (req, res) => {
@@ -56,6 +56,6 @@ const clearFoodCart = async (req, res) => {
 export default (app) => {
   app.get("/api/foodCart/:userId", findFoodCartItems);
   app.delete("/api/foodCart/:itemId/:userId", deleteFoodCartItems);
-  app.delete("/api/foodCart/:userId", clearFoodCart); // -> also need to pass the user id of the cart
+  app.delete("/api/foodCart/:userId", clearFoodCart);
   app.post("/api/foodCart/", addToFoodCart);
 }
