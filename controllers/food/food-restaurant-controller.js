@@ -6,13 +6,28 @@ const findAllRestaurants = async (req, res) => {
   res.json(restaurants);
 }
 
-const findAllRestaurantsByCategory = async (req, res) => {
-  const category = await foodCategoriesDao.findFoodCategories(req.params.category);
-  const restaurants = await foodRestaurantDao.findRestaurantsByCategory(category[0]._id);
+const findAllRestaurantsByOwnerId = async (req, res) => {
+  const ownerId = req.params.ownerId;
+  const restaurants = await foodRestaurantDao.findRestaurantsByOwnerId(ownerId);
   res.json(restaurants);
 }
 
+const findAllRestaurantsByCategory = async (req, res) => {
+  let result = [];
+  if(req.query.category === null || req.query.category === undefined) {
+    result = await foodRestaurantDao.findRestaurants();
+  } else {
+    const category = await foodCategoriesDao.findFoodCategories(req.query.category);
+    if(category.length !== 0) {
+      result = await foodRestaurantDao.findRestaurantsByCategory(category[0]._id);
+    }
+  }
+
+  res.json(result);
+}
+
 export default (app) => {
+  app.get("/api/foodRestaurants", findAllRestaurantsByCategory);
   app.get("/api/foodRestaurants", findAllRestaurants);
-  app.get("/api/foodRestaurants/:category", findAllRestaurantsByCategory);
+  app.get("/api/foodRestaurants/:ownerId", findAllRestaurantsByOwnerId);
 }
