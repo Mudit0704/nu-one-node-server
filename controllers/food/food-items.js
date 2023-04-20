@@ -28,7 +28,15 @@ const findMenuItems = async (req, res) => {
 
 const findMenuItemsById = async (req, res) => {
   const menu_items = await foodItemsDao.findFoodItemsByItemId(req.params.menuItemId);
-  res.json(menu_items);
+  let categories = menu_items[0].categories;
+  let newCategories = [];
+  for (const category of categories) {
+    const categoryName = await foodCategoriesDao.findFoodCategoriesById(category);
+    newCategories.push(categoryName[0].category)
+  }
+  const updatedMenuItems = { ...menu_items[0].toObject(), categories: newCategories };
+
+  res.json([updatedMenuItems]);
 }
 
 const findMenuItemsByRestaurantSearchTerm = async (req, res) => {
@@ -66,6 +74,7 @@ const updateMenuItems = async (req, res) => {
   const itemIdToUpdate = req.params.itemId;
   const updates = req.body;
 
+  updates.categories = [];
   const item = await foodItemsDao.findFoodItemsByItemId(itemIdToUpdate)
   for (const category of req.body.category) {
     const categoryObj = await foodCategoriesDao.findFoodCategories(category);
