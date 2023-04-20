@@ -1,5 +1,9 @@
 import express from 'express';
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import * as fs from "fs";
+import * as path from "path";
+import multer from "multer";
 import ProductsController from "./controllers/market/products-controller.js";
 import AdminsController from "./controllers/market/admins-controller.js";
 import CartsController from "./controllers/market/carts-controller.js";
@@ -37,7 +41,20 @@ app.use(
         }
     ));
 app.use(express.json());
+
 AuthController(app);
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads')
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + '-' + Date.now())
+//   }
+// });
+
+// const upload = multer({storage: storage});
+
 ProductsController(app);
 AdminsController(app);
 CartsController(app);
@@ -49,5 +66,31 @@ FoodOrdersController(app);
 FoodCartController(app);
 FoodReviewController(app);
 FoodRestaurantController(app);
+
+// app.post('/api/uploadImage', upload.single('image'), (req, res, next) => {
+//
+//   console.log(req.body);
+//   console.log(req.file);
+//   const obj = {
+//     name: req.body.name,
+//     desc: req.body.desc,
+//     img: {
+//       data: fs.readFileSync(
+//           path.join(__dirname + '/uploads/' + req.file.filename)),
+//       contentType: 'image/png'
+//     }
+//   };
+//   imgSchema.create(obj)
+//   .then ((err, item) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     else {
+//       // item.save();
+//       res.redirect('/');
+//     }
+//   });
+// });
+
 
 app.listen(4000);
