@@ -42,7 +42,7 @@ const updateFoodOrders = async (req, res) => {
   const orderIdToUpdate = req.params.orderId;
   const updates = req.body;
   const status = await foodOrderDao.updateFoodOrder(orderIdToUpdate,updates);
-  res.json(status);
+  res.json(updates);
 }
 
 
