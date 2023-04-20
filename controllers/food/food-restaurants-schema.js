@@ -3,6 +3,7 @@ const schema = mongoose.Schema({
   name: String,
   address: String,
   description: String,
+  ownerId: mongoose.Schema.Types.ObjectId,
   average_ratings: Number,
   menu_items: [
     {
