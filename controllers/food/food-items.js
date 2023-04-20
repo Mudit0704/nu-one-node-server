@@ -2,12 +2,39 @@ import * as foodItemsDao from "./food-items-dao.js"
 import * as foodCategoriesDao from "./food-categories-dao.js";
 import * as foodRestaurantDao from "./food-restaurant-dao.js";
 
-const restaurant_id = "6439689e5f33ffcba66771e2"; //to be managed through sessions.
+import multer from "multer";
+import fs from "fs";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/foodImages")
+  },
+  filename: function (req, file, cb) {
+    cb(null,file.originalname)
+  }
+});
+
+const upload = multer({storage: storage});
+
 
 const createMenuItem = async (req, res) => {
-  const newItem = req.body;
-  newItem.categories = [];
   const ownerId = req.body.ownerId;
+
+  const data = fs.readFileSync("./public/foodImages/" + req.file.originalname);
+  const contentType = "image/png";
+
+  let newItem = {
+    itemName: req.body.itemName,
+    itemDescription: req.body.itemDescription,
+    price: req.body.price,
+    calories: req.body.calories,
+    image: {
+      data: data,
+      contentType: contentType
+    },
+    categories: [],
+    restaurant_id: 0,
+  }
 
   const restaurant = await foodRestaurantDao.findRestaurantsByOwnerId(ownerId);
   for (const category of req.body.category) {
@@ -98,7 +125,7 @@ export default (app) => {
   app.get("/api/menu", findMenuItems);
   app.get("/api/menu/:restaurant_id", findMenuItemsByRestaurant)
   app.get("/api/menu/search/:restaurant_id", findMenuItemsByRestaurantSearchTerm)
-  app.post("/api/menu/", createMenuItem);
+  app.post("/api/menu/", upload.single('userImage'), createMenuItem);
   app.get("/api/menu/menuItems/:menuItemId", findMenuItemsById);
   app.put("/api/menu/:itemId", updateMenuItems);
   app.delete("/api/menu/:itemId", deleteMenuItems);
