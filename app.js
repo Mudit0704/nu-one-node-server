@@ -13,6 +13,8 @@ import AuthController from "./controllers/users/auth-controller.js";
 import HousingController from "./controllers/residential/housing-controller.js"
 import mongoose from "mongoose";
 import session from "express-session";
+import MessagesController from "./controllers/residential/messages-controller.js";
+import RoommateController from "./controllers/residential/roommate-controller.js";
 
 try {
   mongoose.connect('mongodb://127.0.0.1:27017/nuOne');
@@ -53,5 +55,7 @@ FoodRestaurantController(app);
 
 //Residential related controllers
 HousingController(app);
+MessagesController(app);
+RoommateController(app);
 
 app.listen(4000);
