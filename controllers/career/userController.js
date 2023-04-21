@@ -1,5 +1,6 @@
 import users from "./user.js";
 import * as userDao from "./user-dao.js";
+import * as authDao from "../users/users-dao.js";
 
 const findApplicant = async (req,res) => {
     //TODO : change the user based on the session
@@ -25,9 +26,26 @@ const findAllUsers = async (req,res) => {
 }
 
 const createApplicant = async (req,res) => {
-    // console.log(req.body);
-    await userDao.createApplicant(req.body);
-    res.json(req.body);
+    if(req.body.hasOwnProperty("userId")){
+        const user = await authDao.findUserById(req.body.userId);
+        let obj = {
+            "contact":{
+                "firstName":user.name.split(" ")[0],
+                "lastName":user.name.split(" ")[1],
+                "email":user.email,
+                "phone":user.phone,
+                "location":user.address
+            },
+            "userId":req.body.userId
+        }
+        await userDao.createApplicant(obj);
+        res.json(obj);
+    }
+    else{
+        await userDao.createApplicant(req.body);
+        res.json(req.body);
+    }
+
 }
 
 const getApplications = async (req,res) => {

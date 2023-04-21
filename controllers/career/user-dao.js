@@ -20,7 +20,6 @@ export const editProfile = async (userId, key, editObj,school, company) => {
         await userModel.updateOne({_id: userId}, {$pull: {experience: {company: company}}});
         return userModel.updateOne({_id: userId}, {$push: {experience: editObj}});
     } else {
-        console.log(key,editObj);
         return userModel.updateOne({_id: userId}, {$set: {[key]: editObj}});
     }
 }
