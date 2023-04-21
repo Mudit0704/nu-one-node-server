@@ -38,7 +38,8 @@ app.use(
           credentials: true,
         }
     ));
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+
 AuthController(app);
 ProductsController(app);
 AdminsController(app);

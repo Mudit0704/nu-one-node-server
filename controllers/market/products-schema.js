@@ -8,7 +8,10 @@ const schema = mongoose.Schema({
   description: String,
   price: Number,
   quantity: Number,
-  image: String,
+  image: {
+    data: Buffer,
+    contentType: String
+  },
   rating: Number
 }, {collection: "marketproducts"});
 

@@ -1,4 +1,17 @@
 import * as productsDao from './products-dao.js';
+import multer from "multer";
+import fs from "fs";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/marketImages")
+  },
+  filename: function (req, file, cb) {
+    cb(null,file.originalname)
+  }
+});
+
+const upload = multer({storage: storage});
 
 const findProducts = async (req, res) => {
   const products = await productsDao.findAllProducts();
@@ -12,7 +25,23 @@ const findProductsBySellerId = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-  const newProduct = req.body;
+  const data = fs.readFileSync("./public/marketImages/" + req.file.originalname);
+  const contentType = "image/png";
+
+  const newProduct = {
+    seller_id: req.body.seller_id,
+    seller_name: req.body.seller_name,
+    name: req.body.name,
+    description: req.body.description,
+    price: req.body.price,
+    quantity: req.body.quantity,
+    brand: req.body.brand,
+    image: {
+      data: data,
+      contentType: contentType
+    }
+  }
+
   const insertedProduct = await productsDao.createProduct(newProduct);
   res.json(insertedProduct);
 }
@@ -71,7 +100,7 @@ export default (app) => {
   app.get('/api/products/:sid', searchSellerProductsByName);
   app.get('/api/products/:sid', findProductsBySellerId);
   app.get('/api/products/product/:pid', findProductById);
-  app.post('/api/products', createProduct);
+  app.post('/api/products', upload.single('userImage'), createProduct);
   app.put('/api/products/:pid', updateProduct);
   app.put('/api/products/:pid/:quantity', reduceProductQuantity);
   app.delete('/api/products/:pid', deleteProduct);
