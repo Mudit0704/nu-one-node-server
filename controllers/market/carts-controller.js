@@ -41,7 +41,6 @@ const createCartItem = async (req, res) => {
                     parseInt(req.body.quantity) +
                     existingCartItem.items.filter(item => item._id.toString() === req.body._id)[0].quantity);
               } else {
-                console.log(req.body);
                 await cartsDao.addCartItem(userId,
                     req.body);
               }
