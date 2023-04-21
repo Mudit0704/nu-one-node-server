@@ -11,7 +11,10 @@ const schema = mongoose.Schema({
       itemName: String,
       itemDescription: String,
       price: Number,
-      image: String,
+      image: {
+        data: Buffer,
+        contentType: String
+      },
       categories: [mongoose.Schema.Types.ObjectId],
       calories: Number,
     }
