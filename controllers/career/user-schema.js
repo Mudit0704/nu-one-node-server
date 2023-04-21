@@ -35,7 +35,8 @@ const schema = mongoose.Schema({
     }],
     skills: [String],
     hired: Boolean,
-    hiredJob: String
-}, {collection: "users"});
+    hiredJob: String,
+    userId: String
+}, {collection: "applicants"});
 
 export default schema;

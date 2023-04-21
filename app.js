@@ -20,13 +20,13 @@ import session from "express-session";
 mongoose.connect('mongodb://127.0.0.1:27017/nuOne');
 
 const app = express();
-// app.use(
-//     session({
-//       secret: "secret",
-//       resave: false,
-//       saveUninitialized: false,
-//     })
-// );
+app.use(
+    session({
+      secret: "secret",
+      resave: false,
+      saveUninitialized: false,
+    })
+);
 app.use(
     cors(
         {

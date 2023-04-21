@@ -1,7 +1,7 @@
 import users from "./user.js";
 import * as userDao from "./user-dao.js";
 
-const findUser = async (req,res) => {
+const findApplicant = async (req,res) => {
     //TODO : change the user based on the session
     // const user=users[0];
     // res.json(user);
@@ -9,9 +9,25 @@ const findUser = async (req,res) => {
     res.json(user);
 }
 
+const findApplicantByUserId = async (req,res) => {
+    // console.log("findApplicantByUserId",req.params.userId)
+    if(req.params.userId==="undefined" || req.params.userId==="null" || req.params.userId===""){
+        res.json(null);
+        return;
+    }
+    const applicant = await userDao.findApplicantByUserId(req.params.userId);
+    res.json(applicant);
+}
+
 const findAllUsers = async (req,res) => {
     const users = await userDao.findAllUsers();
     res.json(users);
+}
+
+const createApplicant = async (req,res) => {
+    // console.log(req.body);
+    await userDao.createApplicant(req.body);
+    res.json(req.body);
 }
 
 const getApplications = async (req,res) => {
@@ -42,8 +58,10 @@ const editProfile = async (req,res) => {
     //     user[req.body.key] = req.body.editObj;
     // }
     // res.json(user);
-    const user = await userDao.editProfile(req.params.userId,req.body.key,req.body.editObj,req.body.school,req.body.company);
-    res.json(req.body.editObj);
+    // console.log(req.params.userId,req.body.userId,req.body.key,req.body.editObj,req.body.school,req.body.company);
+    await userDao.editProfile(req.params.userId,req.body.key,req.body.editObj,req.body.school,req.body.company);
+    const user = await userDao.findApplicantByUserId(req.body.userId);
+    res.json(user);
 }
 
 const gotJob = async (req,res) => {
@@ -58,10 +76,13 @@ const gotJob = async (req,res) => {
 
 export default app => {
     app.get("/api/applicant/all" , findAllUsers);
+    app.get("/api/applicant/userId/:userId", findApplicantByUserId);
     app.put("/api/applicant/hired", gotJob);
-    app.get("/api/applicant/:userId", findUser);
+    app.get("/api/applicant/:userId", findApplicant);
+    app.post("/api/applicant", createApplicant);
     app.get("/api/applicant/:userId/applications", getApplications);
     app.post("/api/applicant/:userId/applications", addApplication);
     app.put("/api/applicant/:userId/edit", editProfile);
+
 }
 

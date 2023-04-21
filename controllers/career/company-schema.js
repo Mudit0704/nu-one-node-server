@@ -12,7 +12,8 @@ const schema = mongoose.Schema({
         role: String,
         password: String
     },
-    jobs: [String]
+    jobs: [String],
+    userId: String
 }, {collection: "companies"});
 
 export default schema;

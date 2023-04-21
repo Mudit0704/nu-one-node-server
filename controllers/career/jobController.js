@@ -25,9 +25,9 @@ const addApplicant = async (req,res) => {
 
 const addJob = async (req,res) => {
     const job = req.body;
-    await jobDao.addJob(job);
+    const addedJob = await jobDao.addJob(job);
     // jobs.push(req.body);
-    res.json(req.body);
+    res.json(addedJob);
 }
 
 const editJob = async (req,res) => {
