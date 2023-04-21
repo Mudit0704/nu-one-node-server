@@ -5,7 +5,10 @@ const schema = mongoose.Schema({
   restaurant_id: {type: mongoose.Schema.Types.ObjectId, ref: 'foodRestaurants'},
   categories: [mongoose.Schema.Types.ObjectId],
   price: Number,
-  image: String,
+  image: {
+    data: Buffer,
+    contentType: String
+  },
   calories: Number,
 }, {collection: 'foodItems'});
 export default schema;
