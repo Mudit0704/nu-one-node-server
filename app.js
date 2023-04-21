@@ -37,6 +37,7 @@ app.use(
         }
     ));
 app.use(express.json());
+
 AuthController(app);
 ProductsController(app);
 AdminsController(app);
@@ -49,5 +50,6 @@ FoodOrdersController(app);
 FoodCartController(app);
 FoodReviewController(app);
 FoodRestaurantController(app);
+
 
 app.listen(4000);
