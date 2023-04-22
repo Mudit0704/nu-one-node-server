@@ -1,14 +1,14 @@
 import * as housingDao from "./housing-dao.js"
-
+import {findHouseById} from "./housing-dao.js";
 
 
 const HousingController = (app) => {
-    app.get('/api/houses', findUsers)
+    app.get('/api/houses', findHouses)
     app.get('/api/houses/:uid', findUserById);
     app.post('/api/houses', createHouse);
 }
 
-const findUsers = async (req, res) => {
+const findHouses = async (req, res) => {
     const house = await housingDao.findHouses()
     res.json(house)
 }
