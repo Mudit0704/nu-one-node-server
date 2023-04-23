@@ -5,9 +5,10 @@ const schema = mongoose.Schema({
     streetAddress : String,
     HouseDescription: String,
     rent: String,
-    image: String,
-    image2: String,
-    image3 : String,
+    image: {
+        data: Buffer,
+        contentType: String
+    },
     bedrooms:Number,
     bathrooms: Number
 }, {collection: 'houseItems'});
