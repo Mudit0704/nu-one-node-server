@@ -54,7 +54,7 @@ const updateFoodReview = async (req, res) => {
   const updates = req.body;
   const reviewIdToUpdate = req.params.reviewId;
   const status = await foodReviewsDao.updateFoodReview(reviewIdToUpdate, updates)
-  res.json(status);
+  res.json(reviewIdToUpdate);
 }
 
 const deleteFoodReview = async (req, res) => {
