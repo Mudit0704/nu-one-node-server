@@ -13,6 +13,7 @@ import AuthController from "./controllers/users/auth-controller.js";
 import CareerCompanyController from "./controllers/career/companyController.js";
 import CareerUserController from "./controllers/career/userController.js";
 import CareerJobController from "./controllers/career/jobController.js";
+import CareerIndeedJobController from "./controllers/career/indeedJob-controller.js";
 
 import mongoose from "mongoose";
 import session from "express-session";
@@ -52,5 +53,6 @@ FoodRestaurantController(app);
 CareerJobController(app);
 CareerCompanyController(app);
 CareerUserController(app);
+CareerIndeedJobController(app);
 
 app.listen(4000);
