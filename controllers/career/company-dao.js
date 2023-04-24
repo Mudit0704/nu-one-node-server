@@ -11,3 +11,5 @@ export const deleteJob = (jobId,companyId) => companyModel.updateOne({_id: compa
 
 export const createCompany = (company) => companyModel.create(company);
 
+export const getImage = companyName => companyModel.find({name: companyName}, {companyLogo: 1, _id: 0});
+

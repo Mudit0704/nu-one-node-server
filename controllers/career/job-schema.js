@@ -8,7 +8,10 @@ const schema = mongoose.Schema({
     Salary: String,
     location: String,
     description: String,
-    company_icon: String,
+    company_icon: {
+        data: Buffer,
+        contentType: String
+    },
     skills: [String],
     posting_date: Date,
     number_of_applicants: Number,

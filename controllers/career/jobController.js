@@ -1,14 +1,32 @@
 import jobs from "./job.js";
 import * as jobDao from "./job-dao.js";
+import * as companyDao from './company-dao.js';
 
 const findAllJobs = async (req,res) => {
-    const jobs = await jobDao.findAllJobs();
+    let jobs = await jobDao.findAllJobs();
+
+    const bar = new Promise((resolve) => {
+        jobs.forEach( (job, index, jobs) => {
+            companyDao.getImage(job.company).then(image => {
+                job.company_icon = image[0].companyLogo;
+                if (index === jobs.length - 1) {
+                    resolve();
+                }
+            })
+        });
+    })
+
+    await bar;
+    console.log(jobs.length);
+
     res.json(jobs);
 }
 
 const findJob = async (req,res) => {
     const jobId = req.params.jobId;
-    const job = await jobDao.findJob(jobId);
+    let job = await jobDao.findJob(jobId);
+    const image = await companyDao.getImage(job.company);
+    job.company_icon = image[0].companyLogo;
     res.json(job);
 }
 

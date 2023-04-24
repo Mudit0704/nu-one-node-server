@@ -5,7 +5,10 @@ const schema = mongoose.Schema({
     description: String,
     companyHiring: String,
     contactN0: String,
-    companyLogo: String,
+    companyLogo: {
+        data: Buffer,
+        contentType: String
+    },
     recruiter: {
         recruiterName: String,
         recruiterEmail: String,
