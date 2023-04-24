@@ -19,7 +19,6 @@ export const createUser = (user) => usersModel.create(user);
 export const updateUser = (uid, user) =>
     usersModel.updateOne({ _id: uid }, user);
 
-
 export const deleteUser = (uid) => usersModel.deleteOne({ _id: uid });
 
 export const findUserRole = (uid) => usersModel.findById(uid, { role: 1, _id: 0 });
