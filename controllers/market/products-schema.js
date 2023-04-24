@@ -1,13 +1,17 @@
 import mongoose from "mongoose";
 
 const schema = mongoose.Schema({
-  seller_ids: {type: [mongoose.Schema.Types.ObjectId], ref : 'AdminsModel'},
+  seller_id: {type: mongoose.Schema.Types.ObjectId, ref : 'users'},
+  seller_name: String,
   name: String,
   brand: String,
   description: String,
   price: Number,
   quantity: Number,
-  image: String,
+  image: {
+    data: Buffer,
+    contentType: String
+  },
   rating: Number
 }, {collection: "marketproducts"});
 

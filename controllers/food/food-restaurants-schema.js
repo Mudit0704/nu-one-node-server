@@ -3,6 +3,7 @@ const schema = mongoose.Schema({
   name: String,
   address: String,
   description: String,
+  ownerId: mongoose.Schema.Types.ObjectId,
   average_ratings: Number,
   menu_items: [
     {
@@ -10,7 +11,10 @@ const schema = mongoose.Schema({
       itemName: String,
       itemDescription: String,
       price: Number,
-      image: String,
+      image: {
+        data: Buffer,
+        contentType: String
+      },
       categories: [mongoose.Schema.Types.ObjectId],
       calories: Number,
     }

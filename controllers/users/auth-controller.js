@@ -1,4 +1,5 @@
 import * as usersDao from "./users-dao.js";
+import * as foodRestaurantDao from "../food/food-restaurant-dao.js";
 
 
 const AuthController = (app) => {
@@ -10,8 +11,20 @@ const AuthController = (app) => {
       res.sendStatus(409);
       return;
     }
-    const newUser = await usersDao
-        .createUser(req.body);
+    const newUser = await usersDao.createUser(req.body);
+    if(req.body.role === "foodAdmin") {
+      const newRestaurant = {
+        name: req.body.name,
+        ownerId: newUser._id,
+        address: req.body.address,
+        description: req.body.description,
+        average_ratings: 0,
+        image: "logo192.png", //TODO: Replace this
+        menu_items: []
+      }
+      await foodRestaurantDao.createRestaurant(newRestaurant)
+    }
+
     req.session["currentUser"] = newUser;
     res.json(newUser);
   };
@@ -55,11 +68,19 @@ const AuthController = (app) => {
     res.json(updatedUser);
   };
 
+  const getUserById = async (req, res) => {
+    const userId = req.params.userId;
+    const user = await usersDao.findUserById(userId);
+
+    res.json(user);
+  }
+
   app.post("/api/users/register", register);
   app.post("/api/users/login", login);
   app.post("/api/users/profile", profile);
   app.post("/api/users/logout", logout);
   app.put("/api/users", update);
+  app.get("/api/users/:userId", getUserById);
 };
 
 export default AuthController;

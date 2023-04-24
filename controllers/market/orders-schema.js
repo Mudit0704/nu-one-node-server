@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const schema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
+  customerName: String,
   orders: [
     {
       _id: Number,
@@ -13,6 +14,7 @@ const schema = mongoose.Schema({
       items: [
         {
           _id: {type: mongoose.Schema.Types.ObjectId, ref: 'ProductsModel'},
+          seller_id: {type: mongoose.Schema.Types.ObjectId, ref: 'users'},
           name: String,
           price: Number,
           quantity: Number
