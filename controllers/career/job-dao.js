@@ -4,6 +4,8 @@ export const findAllJobs = () => jobModel.find();
 
 export const findJob = jobId => jobModel.findById(jobId);
 
+export const findJobApplicationsForUser = userId => jobModel.find({applicants: userId});
+
 export const addJob = (job) => jobModel.create(job);
 
 export const editJob = (jobId, job) => jobModel.updateOne({_id: jobId}, {$set: job});
