@@ -6,13 +6,12 @@ const AuthController = (app) => {
   const register = async (req, res) => {
     const username = req.body.username;
     const user = await usersDao
-    .findUserByUsername(username);
+        .findUserByUsername(username);
     if (user) {
       res.sendStatus(409);
       return;
     }
-    const newUser = await usersDao
-    .createUser(req.body);
+    const newUser = await usersDao.createUser(req.body);
     if(req.body.role === "foodAdmin") {
       const newRestaurant = {
         name: req.body.name,
@@ -25,6 +24,7 @@ const AuthController = (app) => {
       }
       await foodRestaurantDao.createRestaurant(newRestaurant)
     }
+
     req.session["currentUser"] = newUser;
     res.json(newUser);
   };
@@ -33,7 +33,7 @@ const AuthController = (app) => {
     const username = req.body.username;
     const password = req.body.password;
     const user = await usersDao
-    .findUserByCredentials(username, password);
+        .findUserByCredentials(username, password);
     if (user) {
       req.session["currentUser"] = user;
       res.json(user);
@@ -63,7 +63,7 @@ const AuthController = (app) => {
       return;
     }
     const updatedUser = await usersDao
-    .updateUser(currentUser._id, req.body);
+        .updateUser(currentUser._id, req.body);
     req.session["currentUser"] = updatedUser;
     res.json(updatedUser);
   };

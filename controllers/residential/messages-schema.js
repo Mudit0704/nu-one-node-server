@@ -4,6 +4,7 @@ const schema = mongoose.Schema({
     name: String,
     houseId : Number,
     description: String,
+    userId: String
 }, {collection: 'messages'});
 export default schema;
 
