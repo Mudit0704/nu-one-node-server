@@ -17,8 +17,6 @@ const findAllJobs = async (req,res) => {
     })
 
     await bar;
-    console.log(jobs.length);
-
     res.json(jobs);
 }
 
@@ -28,6 +26,27 @@ const findJob = async (req,res) => {
     const image = await companyDao.getImage(job.company);
     job.company_icon = image[0].companyLogo;
     res.json(job);
+}
+
+const findApplications = async (req,res) => {
+    const userId = req.params.userId;
+    let jobs = await jobDao.findJobApplicationsForUser(userId);
+
+    const bar = new Promise((resolve) => {
+        jobs.forEach( (job, index, jobs) => {
+            companyDao.getImage(job.company).then(image => {
+                job.company_icon = image[0].companyLogo;
+                if (index === jobs.length - 1) {
+                    resolve();
+                }
+            })
+        });
+    })
+
+    await bar;
+
+    res.json(jobs);
+
 }
 
 const addApplicant = async (req,res) => {
@@ -87,6 +106,7 @@ const hiredApplicant = async (req,res) => {
 export default app =>{
     app.get("/api/jobs", findAllJobs);
     app.get("/api/jobs/:jobId", findJob);
+    app.get("/api/jobs/applications/:userId", findApplications);
     app.post("/api/jobs", addJob);
     app.put("/api/jobs/:jobId", editJob);
     app.delete("/api/jobs/:jobId", deleteJob);
